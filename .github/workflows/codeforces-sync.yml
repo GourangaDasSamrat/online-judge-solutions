@@ -7,66 +7,66 @@ on:
 jobs:
   sync_solutions:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all history for proper diff checking
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-      
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      
+
       - name: Run Codeforces Sync Script
         env:
           CODEFORCES_HANDLE: ${{ secrets.CODEFORCES_HANDLE }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          python scripts/sync_codeforces.py
-      
+          python .github/scripts/sync_codeforces.py
+
       - name: Commit and push changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           # Check for changes excluding README.md date updates
           SOLUTION_CHANGES=$(git diff --name-only | grep -E '\.(py|cpp|java|js|ts|go|rs|c|cs|rb|php|kt|swift)$' || true)
-          
+
           if [ -z "$SOLUTION_CHANGES" ]; then
             echo "ℹ️ No new code solutions detected"
-            
+
             # Check if only README changed
             README_ONLY=$(git diff --name-only | grep -E '^README\.md$' || true)
-            
+
             if [ -n "$README_ONLY" ]; then
               # Reset README changes if only date changed
               git checkout README.md
               echo "📌 README date update reverted - no commit needed"
             fi
-            
+
             exit 0
           fi
-          
+
           echo "📝 New solutions detected:"
           echo "$SOLUTION_CHANGES"
           echo ""
-          
+
           # Stage all changes
           git add .
-          
+
           # Commit with timestamp
           git commit -m "Add new Codeforces solutions - $(date +'%Y-%m-%d %H:%M:%S UTC')"
-          
+
           # Push to repository
           git push
-          
+
           echo "✅ New solutions committed and pushed successfully!"
