@@ -51,14 +51,16 @@ This repository maintains an organized archive of solutions from multiple compet
 │
 ├── [other-platforms]/       # Other coding challenges
 │
-├── scripts/                 # Automation scripts
-│   ├── common.py            # Shared utilities (complexity analysis, graph generation)
-│   ├── sync_leetcode.py     # LeetCode sync script
-│   └── sync_codeforces.py   # Codeforces sync script
 │
-└── .github/workflows/       # CI/CD configuration
-    ├── leetcode-sync.yml
-    └── codeforces-sync.yml
+├── .github
+│    ├──workflows/       # CI/CD configuration
+│    │    ├── leetcode-sync.yml
+│    │    └── codeforces-sync.yml
+│    │
+│    ├── scripts/             # Automation scripts
+│    │       ├── common.py            # Shared utilities (complexity analysis, graph generation )
+│    │       ├── sync_leetcode.py     # LeetCode sync script
+│    │      └── sync_codeforces.py   # Codeforces sync script
 ```
 
 ## Scripts
