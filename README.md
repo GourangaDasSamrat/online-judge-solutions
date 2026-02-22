@@ -1,4 +1,4 @@
-# DSA Solutions
+# Online Judge's Solutions
 
 [![LeetCode Sync](https://github.com/GourangaDasSamrat/DSA/actions/workflows/leetcode-sync.yml/badge.svg)](https://github.com/GourangaDasSamrat/DSA/actions/workflows/leetcode-sync.yml)
 [![Codeforces Sync](https://github.com/GourangaDasSamrat/DSA/actions/workflows/codeforces-sync.yml/badge.svg)](https://github.com/GourangaDasSamrat/DSA/actions/workflows/codeforces-sync.yml)
@@ -42,6 +42,9 @@ This repository maintains an organized archive of solutions from multiple compet
 ├── codeforces/              # Codeforces solutions (automated)
 │   ├── README.md            # Statistics and problem index
 │   └── [problem]/           # Individual problem directories
+│       ├── README.md        # Problem details and analysis
+│       ├── solution.*       # Solution implementation
+│       └── performance.png  # Performance visualization
 │
 ├── ic-mern-b5/              # Additional practice problems
 │   └── [solutions]/         # Manual submissions
@@ -49,13 +52,22 @@ This repository maintains an organized archive of solutions from multiple compet
 ├── [other-platforms]/       # Other coding challenges
 │
 ├── scripts/                 # Automation scripts
-│   ├── sync_leetcode.py
-│   └── sync_codeforces.py
+│   ├── common.py            # Shared utilities (complexity analysis, graph generation)
+│   ├── sync_leetcode.py     # LeetCode sync script
+│   └── sync_codeforces.py   # Codeforces sync script
 │
 └── .github/workflows/       # CI/CD configuration
     ├── leetcode-sync.yml
     └── codeforces-sync.yml
 ```
+
+## Scripts
+
+The `scripts/` directory contains three modules:
+
+- **`common.py`** — Shared utilities used by both sync scripts: Gemini AI complexity analysis, performance graph generation, and README formatting helpers.
+- **`sync_leetcode.py`** — Fetches accepted LeetCode submissions via the GraphQL API, saves solution code, and generates per-problem documentation.
+- **`sync_codeforces.py`** — Fetches accepted Codeforces submissions via the Codeforces API, saves solution placeholders, and generates per-problem documentation.
 
 ## Getting Started
 
@@ -97,8 +109,8 @@ cd ic-mern-b5   # Additional practice problems
 1. **Trigger**: GitHub Actions scheduled workflows (daily at 00:00 UTC)
 2. **Fetch**: Retrieve accepted submissions via platform APIs
 3. **Process**: Extract solution code and metadata
-4. **Analyze**: Generate complexity analysis using Gemini AI
-5. **Visualize**: Create performance graphs with Matplotlib
+4. **Analyze**: Generate complexity analysis using Gemini AI (`common.py`)
+5. **Visualize**: Create performance graphs with Matplotlib (`common.py`)
 6. **Document**: Generate comprehensive README files
 7. **Commit**: Push updates to repository
 
