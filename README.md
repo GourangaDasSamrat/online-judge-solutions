@@ -1,191 +1,78 @@
-# Online Judge's Solutions
+<div align="center">
 
-[![LeetCode Sync](https://github.com/GourangaDasSamrat/DSA/actions/workflows/leetcode-sync.yml/badge.svg)](https://github.com/GourangaDasSamrat/DSA/actions/workflows/leetcode-sync.yml)
-[![Codeforces Sync](https://github.com/GourangaDasSamrat/DSA/actions/workflows/codeforces-sync.yml/badge.svg)](https://github.com/GourangaDasSamrat/DSA/actions/workflows/codeforces-sync.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:8E2DE2,100:2DE2C5&height=180&section=header&text=Online%20Judge's%20Solutions&fontSize=40&fontColor=ffffff&animation=fadeIn&fontAlignY=40" width="100%"/>
 
-A comprehensive collection of Data Structures and Algorithms solutions from competitive programming platforms, featuring automated synchronization and AI-powered complexity analysis.
+<a href="https://github.com/GourangaDasSamrat/DSA/actions/workflows/leetcode-sync.yml"><img src="https://github.com/GourangaDasSamrat/DSA/actions/workflows/leetcode-sync.yml/badge.svg" alt="LeetCode Sync"/></a>
+<a href="https://github.com/GourangaDasSamrat/DSA/actions/workflows/codeforces-sync.yml"><img src="https://github.com/GourangaDasSamrat/DSA/actions/workflows/codeforces-sync.yml/badge.svg" alt="Codeforces Sync"/></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a>
 
-## Overview
+</div>
 
-This repository maintains an organized archive of solutions from multiple competitive programming platforms. Solutions from LeetCode and Codeforces are automatically synchronized daily via GitHub Actions, with complexity analysis powered by Google Gemini AI. Additional practice problems and manual submissions are organized in separate directories.
+A comprehensive, self-updating archive of Data Structures and Algorithms solutions. Solutions from **LeetCode** and **Codeforces** are synced daily via GitHub Actions and get an AI-generated time/space complexity breakdown automatically. Extra practice problems and manual submissions are kept alongside in their own directories.
 
-**Automated Platforms**: [LeetCode](./leetcode) • [Codeforces](./codeforces)
-
-**Manual Collections**: [ic-mern-b5](./ic-mern-b5) • Other Platforms
+📂 [LeetCode](./leetcode) · [Codeforces](./codeforces) · [ic-mern-b5](./ic-mern-b5)
 
 ## Features
 
-### Automated Solutions (LeetCode, Codeforces)
-- **Automated Synchronization**: Daily updates from platform APIs
-- **Complexity Analysis**: AI-generated time and space complexity with explanations
-- **Performance Metrics**: Runtime and memory usage tracking with visualizations
-- **Comprehensive Documentation**: Auto-generated README files for each problem
-- **Version Control**: Complete solution history and evolution tracking
+- **Daily sync** — accepted submissions are pulled from each platform's API automatically, no manual copy-pasting
+- **AI complexity analysis** — every solution gets a time/space complexity explanation via Google Gemini
+- **Performance visualizations** — runtime and memory usage are charted per problem
+- **Auto-generated docs** — each problem gets its own README with the statement, approach, and analysis
+- **Full history** — every attempt is version-controlled, so you can see how a solution evolved
 
-### Manual Collections
-- **Organized Structure**: Solutions grouped by topic or course
-- **Learning Resources**: Additional practice problems and exercises
-- **Custom Implementations**: Experimental and learning-focused code
+## Structure
 
-## Repository Structure
-
-```
+```text
 .
-├── leetcode/                 # LeetCode solutions (automated)
-│   ├── README.md            # Statistics and problem index
-│   └── [problem]/           # Individual problem directories
-│       ├── README.md        # Problem details and analysis
-│       ├── solution.*       # Solution implementation
-│       └── performance.png  # Performance visualization
-│
-├── codeforces/              # Codeforces solutions (automated)
-│   ├── README.md            # Statistics and problem index
-│   └── [problem]/           # Individual problem directories
-│       ├── README.md        # Problem details and analysis
-│       ├── solution.*       # Solution implementation
-│       └── performance.png  # Performance visualization
-│
-├── ic-mern-b5/              # Additional practice problems
-│   └── [solutions]/         # Manual submissions
-│
-├── [other-platforms]/       # Other coding challenges
-│
-│
-├── .github
-│    ├──workflows/       # CI/CD configuration
-│    │    ├── leetcode-sync.yml
-│    │    └── codeforces-sync.yml
-│    │
-│    ├── scripts/             # Automation scripts
-│    │       ├── common.py            # Shared utilities (complexity analysis, graph generation )
-│    │       ├── sync_leetcode.py     # LeetCode sync script
-│    │      └── sync_codeforces.py   # Codeforces sync script
+├── leetcode/       # Auto-synced solutions + README + performance graphs
+├── codeforces/     # Auto-synced solutions + README + performance graphs
+├── ic-mern-b5/     # Manual practice solutions
+└── .github/
+    ├── workflows/  # Sync automation (daily 00:00 UTC)
+    └── scripts/    # common.py, sync_leetcode.py, sync_codeforces.py
 ```
 
-## Scripts
+Each automated directory (`leetcode/`, `codeforces/`) has its own `README.md` with problem stats and a full solution index — start there to browse.
 
-The `scripts/` directory contains three modules:
+## How it works
 
-- **`common.py`** — Shared utilities used by both sync scripts: Gemini AI complexity analysis, performance graph generation, and README formatting helpers.
-- **`sync_leetcode.py`** — Fetches accepted LeetCode submissions via the GraphQL API, saves solution code, and generates per-problem documentation.
-- **`sync_codeforces.py`** — Fetches accepted Codeforces submissions via the Codeforces API, saves solution placeholders, and generates per-problem documentation.
+Every day at 00:00 UTC, a GitHub Actions workflow fetches newly accepted submissions, analyzes their complexity with Gemini AI, generates a performance graph, writes the problem documentation, and commits the update — no manual step required.
 
-## Getting Started
+Running it yourself needs these secrets configured in the repo:
 
-### Prerequisites
+| Secret | Used for |
+|---|---|
+| `LEETCODE_SESSION` | Authenticated LeetCode session cookie |
+| `LEETCODE_CSRF_TOKEN` | CSRF token for LeetCode requests |
+| `CODEFORCES_HANDLE` | Codeforces username to track |
+| `GEMINI_API_KEY` | Complexity analysis via Google Gemini |
 
-- Python 3.8+
-- Git
-
-### Installation
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/GourangaDasSamrat/DSA.git
 cd DSA
-
-# Install dependencies (for local development)
 pip install -r requirements.txt
 ```
 
-### Browsing Solutions
-
-Navigate to platform-specific directories:
-
-```bash
-# Automated platforms
-cd leetcode     # LeetCode solutions (auto-synced)
-cd codeforces   # Codeforces solutions (auto-synced)
-
-# Manual collections
-cd ic-mern-b5   # Additional practice problems
-```
-
-**Automated directories** contain a `README.md` with problem statistics and a complete index of solutions. Manual collections are organized by topic or course structure.
-
-## Automation Pipeline
-
-### Workflow
-
-1. **Trigger**: GitHub Actions scheduled workflows (daily at 00:00 UTC)
-2. **Fetch**: Retrieve accepted submissions via platform APIs
-3. **Process**: Extract solution code and metadata
-4. **Analyze**: Generate complexity analysis using Gemini AI (`common.py`)
-5. **Visualize**: Create performance graphs with Matplotlib (`common.py`)
-6. **Document**: Generate comprehensive README files
-7. **Commit**: Push updates to repository
-
-### Configuration
-
-Automation requires the following GitHub Secrets:
-
-**LeetCode**:
-- `LEETCODE_SESSION`: Session cookie from authenticated LeetCode session
-- `LEETCODE_CSRF_TOKEN`: CSRF token from LeetCode
-
-**Codeforces**:
-- `CODEFORCES_HANDLE`: Codeforces username
-
-**Shared**:
-- `GEMINI_API_KEY`: Google Gemini API key for complexity analysis
-
-## Tech Stack
-
-**Languages**: Python, C++, Java, JavaScript
-
-**Automation**: GitHub Actions, Python
-
-**APIs**: LeetCode API, Codeforces API, Google Gemini AI
-
-**Visualization**: Matplotlib
-
-**Version Control**: Git
-
-## Topics Covered
-
-**Data Structures**: Arrays, Linked Lists, Stacks, Queues, Trees, Graphs, Hash Tables, Heaps, Tries
-
-**Algorithms**: Dynamic Programming, Greedy, Backtracking, Divide & Conquer, Graph Algorithms, Sorting, Searching
-
-**Advanced Topics**: Bit Manipulation, Number Theory, Computational Geometry, String Algorithms
-
-## Contributing
-
-This is a personal learning repository, but suggestions and improvements are welcome.
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Commit your changes (`git commit -am 'Add improvement'`)
-4. Push to the branch (`git push origin feature/improvement`)
-5. Open a Pull Request
-
-Please ensure:
-- Code follows existing style conventions
-- Documentation is updated accordingly
-- All tests pass (if applicable)
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-**Gouranga Das**
-
-- GitHub: [@GourangaDasSamrat](https://github.com/GourangaDasSamrat)
-- LeetCode: [@gourangadassamrat](https://leetcode.com/u/gourangadassamrat/)
-- Codeforces: [@Gouranga_Khulna](https://codeforces.com/profile/Gouranga_Khulna)
-
-## Acknowledgments
-
-- LeetCode for providing the platform and API
-- Codeforces for the competitive programming platform
-- Google Gemini AI for complexity analysis capabilities
-- GitHub Actions for automation infrastructure
+MIT — see [LICENSE](LICENSE).
 
 ---
 
-**Note**: This repository is automatically updated. Solutions reflect personal approaches and may not represent optimal solutions for all cases.
+## Author
+
+<div align="center">
+
+<img src="https://github.com/GourangaDasSamrat.png" width="100" height="100" style="border-radius:50%;" alt="Gouranga Das"/>
+
+### Gouranga Das Samrat
+
+Competitive programmer maintaining this archive as a daily practice log — solving, syncing, and documenting the process one problem at a time.
+
+<a href="https://github.com/GourangaDasSamrat"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/></a>
+<a href="https://leetcode.com/u/gourangadassamrat/"><img src="https://img.shields.io/badge/LeetCode-FFA116?style=for-the-badge&logo=leetcode&logoColor=black"/></a>
+<a href="https://codeforces.com/profile/Gouranga_Khulna"><img src="https://img.shields.io/badge/Codeforces-1F8ACB?style=for-the-badge&logo=codeforces&logoColor=white"/></a>
+
+</div>
