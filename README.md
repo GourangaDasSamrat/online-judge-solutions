@@ -8,14 +8,13 @@
 
 </div>
 
-A comprehensive, self-updating archive of Data Structures and Algorithms solutions. Solutions from **LeetCode** and **Codeforces** are synced daily via GitHub Actions and get an AI-generated time/space complexity breakdown automatically. Extra practice problems and manual submissions are kept alongside in their own directories.
+A comprehensive, self-updating archive of Data Structures and Algorithms solutions. Solutions from **LeetCode** and **Codeforces** are synced daily via GitHub Actions. Extra practice problems and manual submissions are kept alongside in their own directories.
 
 📂 [LeetCode](./leetcode) · [Codeforces](./codeforces) · [ic-mern-b5](./ic-mern-b5)
 
 ## Features
 
 - **Daily sync** — accepted submissions are pulled from each platform's API automatically, no manual copy-pasting
-- **AI complexity analysis** — every solution gets a time/space complexity explanation via Google Gemini
 - **Performance visualizations** — runtime and memory usage are charted per problem
 - **Auto-generated docs** — each problem gets its own README with the statement, approach, and analysis
 - **Full history** — every attempt is version-controlled, so you can see how a solution evolved
@@ -36,7 +35,7 @@ Each automated directory (`leetcode/`, `codeforces/`) has its own `README.md` wi
 
 ## How it works
 
-Every day at 00:00 UTC, a GitHub Actions workflow fetches newly accepted submissions, analyzes their complexity with Gemini AI, generates a performance graph, writes the problem documentation, and commits the update — no manual step required.
+Every day at 00:00 UTC, a GitHub Actions workflow fetches newly accepted submissions, generates a performance graph, writes the problem documentation, and commits the update — no manual step required.
 
 Running it yourself needs these secrets configured in the repo:
 
@@ -45,19 +44,6 @@ Running it yourself needs these secrets configured in the repo:
 | `LEETCODE_SESSION` | Authenticated LeetCode session cookie |
 | `LEETCODE_CSRF_TOKEN` | CSRF token for LeetCode requests |
 | `CODEFORCES_HANDLE` | Codeforces username to track |
-| `GEMINI_API_KEY` | Complexity analysis via Google Gemini |
-
-## Setup
-
-```bash
-git clone https://github.com/GourangaDasSamrat/DSA.git
-cd DSA
-pip install -r requirements.txt
-```
-
-## License
-
-MIT — see [LICENSE](LICENSE).
 
 ---
 
@@ -76,3 +62,9 @@ Competitive programmer maintaining this archive as a daily practice log — solv
 <a href="https://codeforces.com/profile/Gouranga_Khulna"><img src="https://img.shields.io/badge/Codeforces-1F8ACB?style=for-the-badge&logo=codeforces&logoColor=white"/></a>
 
 </div>
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
