@@ -228,8 +228,11 @@ class LeetCodeSync:
             ext_map = {
                 'cpp': 'cpp', 'java': 'java', 'python': 'py', 'python3': 'py',
                 'c': 'c', 'csharp': 'cs', 'javascript': 'js', 'typescript': 'ts',
-                'php': 'php', 'swift': 'swift', 'kotlin': 'kt', 'go': 'go',
-                'ruby': 'rb', 'scala': 'scala', 'rust': 'rs'
+                'php': 'php', 'swift': 'swift', 'kotlin': 'kt',
+                'golang': 'go', 'go': 'go',  # LeetCode actually sends 'golang'
+                'ruby': 'rb', 'scala': 'scala', 'rust': 'rs',
+                'racket': 'rkt', 'erlang': 'erl', 'elixir': 'ex', 'dart': 'dart',
+                'pythondata': 'py', 'mysql': 'sql', 'mssql': 'sql', 'oraclesql': 'sql', 'postgresql': 'sql'
             }
 
             for sub in submissions:
