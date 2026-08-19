@@ -9,13 +9,12 @@ import os
 from datetime import datetime
 import time
 
-from common import analyze_complexity, save_performance_graph, write_complexity_section
+from common import save_performance_graph
 
 
 class CodeforcesSync:
     def __init__(self):
         self.handle = os.environ.get('CODEFORCES_HANDLE')
-        self.gemini_api_key = os.environ.get('GEMINI_API_KEY')
         self.base_dir = './codeforces'
 
         if not self.handle:
@@ -36,10 +35,6 @@ class CodeforcesSync:
             y_label='Value',
             value_fmt=lambda v: f'{v} ms' if v == time_ms else f'{v:.2f} MB'
         )
-
-    def analyze_complexity(self, code, lang, max_retries=3):
-        """Analyze code complexity using Gemini API"""
-        return analyze_complexity(self.gemini_api_key, code, lang, max_retries)
 
     def get_user_submissions(self):
         """Get all submissions from Codeforces API"""
@@ -74,7 +69,7 @@ class CodeforcesSync:
         except:
             return 'Unrated'
 
-    def create_problem_readme(self, folder_path, problem_info, submission_info, complexity_data, graph_created):
+    def create_problem_readme(self, folder_path, problem_info, submission_info, graph_created):
         """Create README.md for a specific problem"""
         readme_path = os.path.join(folder_path, 'README.md')
 
@@ -100,9 +95,6 @@ class CodeforcesSync:
             f.write(f"| Execution Time | {submission_info['time_ms']} ms |\n")
             f.write(f"| Memory Used | {submission_info['memory_kb'] / 1024:.2f} MB |\n")
             f.write(f"| Submission Time | {submission_info['creation_time']} |\n\n")
-
-            if complexity_data:
-                write_complexity_section(f, complexity_data, submission_info['language'])
 
         print(f"Updated README: {readme_path}")
 
@@ -148,29 +140,11 @@ class CodeforcesSync:
             reverse=True
         )
 
-        rating_emoji_map = {
-            lambda v: v <= 1000: '🟢',
-            lambda v: v <= 1300: '🔵',
-            lambda v: v <= 1600: '🟣',
-            lambda v: v <= 1900: '🟡',
-        }
-
-        def get_rating_emoji(rating):
-            try:
-                v = int(rating)
-                if v <= 1000: return '🟢'
-                if v <= 1300: return '🔵'
-                if v <= 1600: return '🟣'
-                if v <= 1900: return '🟡'
-                return '🔴'
-            except:
-                return '⚪'
-
         with open(main_readme_path, 'w', encoding='utf-8') as f:
-            f.write("# 🚀 Codeforces Solutions\n\n")
+            f.write("# Codeforces Solutions\n\n")
             f.write("My personal collection of Codeforces problem solutions, showcasing competitive programming skills.\n\n")
 
-            f.write("## 📊 Progress Statistics\n\n")
+            f.write("## Progress Statistics\n\n")
             f.write(f"**Total Problems Solved:** {total_problems}\n\n")
 
             f.write("### By Rating\n\n")
@@ -183,7 +157,7 @@ class CodeforcesSync:
 
             f.write("**Languages Used:** " + ", ".join(sorted(languages_used)) + "\n\n")
 
-            f.write("## 📝 Problem List\n\n")
+            f.write("## Problem List\n\n")
             f.write("| Contest | Index | Problem | Rating | Language |\n")
             f.write("|---------|-------|---------|--------|----------|\n")
 
@@ -194,47 +168,43 @@ class CodeforcesSync:
                 rating = info.get('rating', 'Unrated')
                 folder = info.get('folder', '')
                 language = info.get('language', '')
-                emoji = get_rating_emoji(rating)
-                f.write(f"| {contest_id} | {index} | [{name}](./{folder}) | {emoji} {rating} | `{language}` |\n")
+                f.write(f"| {contest_id} | {index} | [{name}](./{folder}) | {rating} | `{language}` |\n")
 
-            f.write("\n## 🎯 Topics Covered\n\n")
+            f.write("\n## Topics Covered\n\n")
             if all_tags:
                 tag_list = sorted(all_tags)
                 for i in range(0, len(tag_list), 3):
-                    f.write("- " + " • ".join(tag_list[i:i+3]) + "\n")
+                    f.write("- " + " / ".join(tag_list[i:i+3]) + "\n")
             else:
                 for topic in ["Implementation", "Math", "Greedy", "Dynamic Programming", "Data Structures", "Graph Theory"]:
                     f.write(f"- {topic}\n")
             f.write("\n")
 
-            f.write("## 🔗 My Profile\n\n")
+            f.write("## My Profile\n\n")
             f.write(f"**Codeforces:** [My Profile](https://codeforces.com/profile/{self.handle})\n\n")
 
-            f.write("## 📈 Features\n\n")
+            f.write("## Features\n\n")
             f.write("Each solution includes:\n")
             for feature in [
-                "✅ Problem statement and Codeforces link",
-                "💻 Clean, optimized code",
-                "⏱️ Time complexity analysis",
-                "💾 Space complexity analysis",
-                "📊 Performance metrics (Runtime & Memory)",
-                "📈 Visual performance graphs",
-                "🏷️ Problem tags and ratings",
+                "Problem statement and Codeforces link",
+                "Clean, optimized code",
+                "Performance metrics (Runtime & Memory)",
+                "Visual performance graphs",
+                "Problem tags and ratings",
             ]:
                 f.write(f"- {feature}\n")
             f.write("\n")
 
-            f.write("## 🛠️ Tech Stack\n\n")
+            f.write("## Tech Stack\n\n")
             f.write("- **Automated Sync:** GitHub Actions\n")
-            f.write("- **Complexity Analysis:** Google Gemini AI\n")
             f.write("- **Visualization:** Matplotlib\n")
             f.write("- **Data Source:** Codeforces API\n\n")
 
             f.write("---\n\n")
-            f.write("_🎯 Practice makes perfect. Keep solving, keep improving!_ 💻\n\n")
+            f.write("_Practice makes perfect. Keep solving, keep improving!_\n\n")
             f.write(f"_Last updated: {datetime.now().strftime('%B %d, %Y')}_\n")
 
-        print(f"✓ Main README updated: {main_readme_path}")
+        print(f"Main README updated: {main_readme_path}")
 
     def sync(self):
         """Main sync function"""
@@ -320,17 +290,6 @@ class CodeforcesSync:
 
             graph_created = self.create_performance_graph(folder_path, time_ms, memory_kb, name)
 
-            complexity_data = None
-            if os.path.exists(source_file):
-                with open(source_file, 'r', encoding='utf-8') as f:
-                    code = f.read()
-                    if self.gemini_api_key and len(code) > 200 and "Please add your solution code here" not in code:
-                        print(f"  Analyzing complexity...")
-                        complexity_data = self.analyze_complexity(code, language)
-                        if complexity_data:
-                            print(f"  ✓ Complexity: {complexity_data['time_complexity']}, {complexity_data['space_complexity']}")
-                        time.sleep(2)
-
             submission_info = {
                 'verdict': sub['verdict'],
                 'language': language,
@@ -347,13 +306,13 @@ class CodeforcesSync:
                 'tags': tags
             }
 
-            self.create_problem_readme(folder_path, problem_info, submission_info, complexity_data, graph_created)
+            self.create_problem_readme(folder_path, problem_info, submission_info, graph_created)
 
         self.create_main_readme(processed_problems)
-        print(f"\n✅ Processed {len(processed_problems)} accepted solutions")
+        print(f"\nProcessed {len(processed_problems)} accepted solutions")
 
 
 if __name__ == "__main__":
     syncer = CodeforcesSync()
     syncer.sync()
-    print("\n✅ Sync completed successfully!")
+    print("\nSync completed successfully!")

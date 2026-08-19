@@ -7,17 +7,15 @@ Automatically syncs LeetCode submissions and generates documentation
 import requests
 import os
 from datetime import datetime
-import time
 import traceback
 
-from common import analyze_complexity, save_performance_graph, write_complexity_section
+from common import save_performance_graph
 
 
 class LeetCodeSync:
     def __init__(self):
         self.session = os.environ.get('LEETCODE_SESSION')
         self.csrf_token = os.environ.get('LEETCODE_CSRF')
-        self.gemini_api_key = os.environ.get('GEMINI_API_KEY')
         self.base_dir = './leetcode'
 
         if not self.session or not self.csrf_token:
@@ -45,10 +43,6 @@ class LeetCodeSync:
             y_label='Percentile (%)',
             value_fmt=lambda v: f'{v:.1f}%'
         )
-
-    def analyze_complexity(self, code, lang, max_retries=3):
-        """Analyze code complexity using Gemini API"""
-        return analyze_complexity(self.gemini_api_key, code, lang, max_retries)
 
     def get_problem_details(self, title_slug):
         """Get problem details from LeetCode GraphQL API"""
@@ -104,7 +98,7 @@ class LeetCodeSync:
         except (ValueError, TypeError):
             return None
 
-    def create_problem_readme(self, folder_path, info, title_slug, performance_data, complexity_data, graph_created):
+    def create_problem_readme(self, folder_path, info, title_slug, performance_data, graph_created):
         """Create README.md for a specific problem"""
         readme_path = os.path.join(folder_path, 'README.md')
 
@@ -129,11 +123,6 @@ class LeetCodeSync:
                     f.write(f"| {lang.title()} | {perf['runtime_percentile']:.2f}% | {perf['memory_percentile']:.2f}% |\n")
                 f.write("\n")
 
-            if complexity_data:
-                f.write("## Complexity Analysis\n\n")
-                for lang, complexity in complexity_data.items():
-                    write_complexity_section(f, complexity, lang.title())
-
         print(f"Updated README: {readme_path}")
 
     def create_main_readme(self, processed_problems, processed_langs):
@@ -157,23 +146,21 @@ class LeetCodeSync:
             key=lambda x: int(x[1].get('number', '0') or '0') if x[1].get('number', '0') else 0
         )
 
-        diff_emoji = {'Easy': '🟢', 'Medium': '🟡', 'Hard': '🔴'}
-
         with open(main_readme_path, 'w', encoding='utf-8') as f:
-            f.write("# 🚀 LeetCode Solutions\n\n")
+            f.write("# LeetCode Solutions\n\n")
             f.write("My personal collection of LeetCode problem solutions, documenting my journey in mastering data structures and algorithms.\n\n")
 
-            f.write("## 📊 Progress Statistics\n\n")
+            f.write("## Progress Statistics\n\n")
             f.write(f"**Total Problems Solved:** {total_problems}\n\n")
             f.write("| Difficulty | Count |\n")
             f.write("|------------|-------|\n")
-            f.write(f"| 🟢 Easy | {difficulty_count['Easy']} |\n")
-            f.write(f"| 🟡 Medium | {difficulty_count['Medium']} |\n")
-            f.write(f"| 🔴 Hard | {difficulty_count['Hard']} |\n\n")
+            f.write(f"| Easy | {difficulty_count['Easy']} |\n")
+            f.write(f"| Medium | {difficulty_count['Medium']} |\n")
+            f.write(f"| Hard | {difficulty_count['Hard']} |\n\n")
 
             f.write("**Languages Used:** " + ", ".join(sorted(lang.title() for lang in languages_used)) + "\n\n")
 
-            f.write("## 📝 Problem List\n\n")
+            f.write("## Problem List\n\n")
             f.write("| # | Title | Difficulty | Solution |\n")
             f.write("|---|-------|------------|----------|\n")
 
@@ -182,37 +169,33 @@ class LeetCodeSync:
                 title = info.get('title', '')
                 difficulty = info.get('difficulty', 'Unknown')
                 folder = info.get('folder', '')
-                emoji = diff_emoji.get(difficulty, '⚪')
                 langs = sorted(processed_langs.get(title_slug, []))
                 lang_badges = " ".join([f"`{lang}`" for lang in langs])
-                f.write(f"| {number} | [{title}](./{folder}) | {emoji} {difficulty} | {lang_badges} |\n")
+                f.write(f"| {number} | [{title}](./{folder}) | {difficulty} | {lang_badges} |\n")
 
-            f.write("## 🔗 My Profile\n\n")
+            f.write("## My Profile\n\n")
             f.write("**LeetCode:** [My Profile](https://leetcode.com/u/gourangadassamrat/)\n\n")
 
-            f.write("## 📈 Features\n\n")
+            f.write("## Features\n\n")
             f.write("Each solution includes:\n")
             for feature in [
-                "✅ Problem statement and LeetCode link",
-                "💻 Clean, well-commented code",
-                "⏱️ Time complexity analysis",
-                "💾 Space complexity analysis",
-                "📊 Performance metrics (Runtime & Memory percentiles)",
-                "📈 Visual performance graphs",
+                "Problem statement and LeetCode link",
+                "Clean, well-commented code",
+                "Performance metrics (Runtime & Memory percentiles)",
+                "Visual performance graphs",
             ]:
                 f.write(f"- {feature}\n")
             f.write("\n")
 
-            f.write("## 🛠️ Tech Stack\n\n")
+            f.write("## Tech Stack\n\n")
             f.write("- **Automated Sync:** GitHub Actions\n")
-            f.write("- **Complexity Analysis:** Google Gemini AI\n")
             f.write("- **Visualization:** Matplotlib\n\n")
 
             f.write("---\n\n")
-            f.write("_🎯 Consistency is key. Keep coding, keep learning!_ 💻\n\n")
+            f.write("_Consistency is key. Keep coding, keep learning!_\n\n")
             f.write(f"_Last updated: {datetime.now().strftime('%B %d, %Y')}_\n")
 
-        print(f"✓ Main README updated: {main_readme_path}")
+        print(f"Main README updated: {main_readme_path}")
 
     def sync(self):
         """Main sync function"""
@@ -240,7 +223,6 @@ class LeetCodeSync:
 
             processed_problems = {}
             processed_langs = {}
-            solution_complexities = {}
             solution_performance = {}
 
             ext_map = {
@@ -309,14 +291,6 @@ class LeetCodeSync:
                 else:
                     print(f"  No performance data available for this submission")
 
-                if self.gemini_api_key:
-                    print(f"Analyzing complexity for {title_slug} ({lang})...")
-                    complexity = self.analyze_complexity(code, lang)
-                    if complexity:
-                        solution_complexities.setdefault(title_slug, {})[lang] = complexity
-                        print(f"✓ Complexity analyzed: {complexity['time_complexity']}, {complexity['space_complexity']}")
-                    time.sleep(2)
-
             for title_slug, info in processed_problems.items():
                 folder_path = os.path.join(self.base_dir, info['folder'])
 
@@ -336,7 +310,6 @@ class LeetCodeSync:
                     info,
                     title_slug,
                     solution_performance.get(title_slug),
-                    solution_complexities.get(title_slug),
                     graph_created
                 )
 
@@ -351,4 +324,4 @@ class LeetCodeSync:
 if __name__ == "__main__":
     syncer = LeetCodeSync()
     syncer.sync()
-    print("\n✅ Sync completed successfully!")
+    print("\nSync completed successfully!")

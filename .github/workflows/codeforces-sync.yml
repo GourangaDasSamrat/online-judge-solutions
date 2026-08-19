@@ -29,7 +29,6 @@ jobs:
       - name: Run Codeforces Sync Script
         env:
           CODEFORCES_HANDLE: ${{ secrets.CODEFORCES_HANDLE }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python .github/scripts/sync_codeforces.py
 
@@ -42,7 +41,7 @@ jobs:
           SOLUTION_CHANGES=$(git diff --name-only | grep -E '\.(py|cpp|java|js|ts|go|rs|c|cs|rb|php|kt|swift)$' || true)
 
           if [ -z "$SOLUTION_CHANGES" ]; then
-            echo "ℹ️ No new code solutions detected"
+            echo "No new code solutions detected"
 
             # Check if only README changed
             README_ONLY=$(git diff --name-only | grep -E '^README\.md$' || true)
@@ -50,13 +49,13 @@ jobs:
             if [ -n "$README_ONLY" ]; then
               # Reset README changes if only date changed
               git checkout README.md
-              echo "📌 README date update reverted - no commit needed"
+              echo "README date update reverted - no commit needed"
             fi
 
             exit 0
           fi
 
-          echo "📝 New solutions detected:"
+          echo "New solutions detected:"
           echo "$SOLUTION_CHANGES"
           echo ""
 
@@ -69,4 +68,4 @@ jobs:
           # Push to repository
           git push
 
-          echo "✅ New solutions committed and pushed successfully!"
+          echo "New solutions committed and pushed successfully!"
