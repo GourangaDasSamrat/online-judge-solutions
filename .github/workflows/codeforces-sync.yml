@@ -37,21 +37,20 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-          # Check for changes excluding README.md date updates
-          SOLUTION_CHANGES=$(git diff --name-only | grep -E '\.(py|cpp|java|js|ts|go|rs|c|cs|rb|php|kt|swift)$' || true)
+          # Stage everything first so brand-new (untracked) problem folders
+          # are visible to `git diff --cached`. Plain `git diff` only shows
+          # changes to files git already knows about, so new solves for
+          # never-before-seen problems were always invisible to it.
+          git add -A
+
+          SOLUTION_CHANGES=$(git diff --cached --name-only | grep -E '\.(py|cpp|java|js|ts|go|rs|c|cs|rb|php|kt|swift|scala|hs|txt)$' || true)
 
           if [ -z "$SOLUTION_CHANGES" ]; then
             echo "No new code solutions detected"
-
-            # Check if only README changed
-            README_ONLY=$(git diff --name-only | grep -E '^README\.md$' || true)
-
-            if [ -n "$README_ONLY" ]; then
-              # Reset README changes if only date changed
-              git checkout README.md
-              echo "README date update reverted - no commit needed"
-            fi
-
+            # Nothing worth keeping (e.g. only the date line in README.md
+            # changed) — discard staged changes and any stray new files.
+            git reset --hard
+            git clean -fd
             exit 0
           fi
 
@@ -59,13 +58,7 @@ jobs:
           echo "$SOLUTION_CHANGES"
           echo ""
 
-          # Stage all changes
-          git add .
-
-          # Commit with timestamp
           git commit -m "Add new Codeforces solutions - $(date +'%Y-%m-%d %H:%M:%S UTC')"
-
-          # Push to repository
           git push
 
           echo "New solutions committed and pushed successfully!"
