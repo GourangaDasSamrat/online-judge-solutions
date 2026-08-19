@@ -14,5 +14,6 @@
 
 | Language | Runtime Percentile | Memory Percentile |
 |----------|-------------------|------------------|
-| Cpp | 28.30% | 8.52% |
+| Golang | 100.00% | 42.86% |
+| Cpp | 24.22% | 5.47% |
 

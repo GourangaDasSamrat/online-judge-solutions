@@ -14,6 +14,6 @@
 
 | Language | Runtime Percentile | Memory Percentile |
 |----------|-------------------|------------------|
-| Cpp | 34.09% | 50.07% |
-| Javascript | 98.79% | 85.79% |
+| Golang | 100.00% | 39.61% |
+| Cpp | 34.97% | 52.00% |
 
