@@ -10,7 +10,7 @@
 
 A comprehensive, self-updating archive of Data Structures and Algorithms solutions. Solutions from **LeetCode** and **Codeforces** are synced daily via GitHub Actions. Extra practice problems and manual submissions are kept alongside in their own directories.
 
-📂 [LeetCode](./leetcode) · [Codeforces](./codeforces) · [ic-mern-b5](./ic-mern-b5)
+📂 [LeetCode](./leetcode) · [Codeforces](./codeforces)
 
 ## Features
 
@@ -25,7 +25,6 @@ A comprehensive, self-updating archive of Data Structures and Algorithms solutio
 .
 ├── leetcode/       # Auto-synced solutions + README + performance graphs
 ├── codeforces/     # Auto-synced solutions + README + performance graphs
-├── ic-mern-b5/     # Manual practice solutions
 └── .github/
     ├── workflows/  # Sync automation (daily 00:00 UTC)
     └── scripts/    # common.py, sync_leetcode.py, sync_codeforces.py
